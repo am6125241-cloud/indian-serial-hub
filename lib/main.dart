@@ -147,7 +147,10 @@ class StorageService {
   // ── Admin Panel ──
   static bool isAdminLoggedIn() => _prefs?.getBool('adminLoggedIn') ?? false;
   static Future<void> setAdminLoggedIn(bool val) async => await _prefs!.setBool('adminLoggedIn', val);
-  static String getAdminPassword() => _prefs?.getString('adminPassword') ?? 'REDACTED';
+  static String getAdminPassword() => _prefs?.getString('adminPassword') ?? '';
+  // SECURITY: koi default password code me nahi hai — pehli login par jo
+  // password enter hoga wahi admin password ban jata hai (first-run setup)
+  static bool hasAdminPassword() => (_prefs?.getString('adminPassword') ?? '').isNotEmpty;
   static Future<void> setAdminPassword(String pass) async => await _prefs!.setString('adminPassword', pass);
 
   // ── Session Tracking ──
@@ -5089,7 +5092,28 @@ class _AdminDashboardState extends State<AdminDashboard> with TickerProviderStat
 
   void _tryLogin() {
     final pass = _passController.text.trim();
+    if (pass.isEmpty) {
+      setState(() => _errorText = 'Password enter karo.');
+      return;
+    }
     final storedPass = StorageService.getAdminPassword();
+
+    // Pehli baar setup: koi password set nahi hai toh yahi password ban jayega
+    if (storedPass.isEmpty) {
+      if (pass.length < 4) {
+        setState(() => _errorText = 'Password kam se kam 4 characters ka rakho.');
+        return;
+      }
+      StorageService.setAdminPassword(pass);
+      StorageService.setAdminLoggedIn(true);
+      setState(() {
+        _isUnlocked = true;
+        _errorText = '';
+      });
+      _loadDashboardData();
+      return;
+    }
+
     if (pass == storedPass) {
       StorageService.setAdminLoggedIn(true);
       setState(() {
@@ -5261,7 +5285,9 @@ class _AdminDashboardState extends State<AdminDashboard> with TickerProviderStat
             ],
             const SizedBox(height: 8),
             Text(
-              'Default password: REDACTED',
+              StorageService.hasAdminPassword()
+                  ? 'Apna set kiya hua password enter karo'
+                  : 'Pehli baar: yahin apna naya admin password banao',
               style: GoogleFonts.poppins(color: Colors.white.withOpacity(0.25), fontSize: 11),
             ),
             const SizedBox(height: 24),
@@ -6004,7 +6030,7 @@ class _AdminDashboardState extends State<AdminDashboard> with TickerProviderStat
           _actionButton(
             icon: Icons.key,
             title: 'Change Admin Password',
-            subtitle: 'Current: ${StorageService.getAdminPassword()}',
+            subtitle: 'Naya password set karo',
             color: AppTheme.accentGold,
             onTap: _showChangePasswordDialog,
           ),
