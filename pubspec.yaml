@@ -1,0 +1,28 @@
+name: india_serial_hub
+description: A Professional Flutter OTT App for Live TV & Indian Serials (Android TV + Mobile)
+publish_to: 'none'
+version: 2.1.1+5
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  video_player: ^2.8.2
+  chewie: ^1.7.4
+  http: ^1.2.1
+  google_fonts: ^6.1.0
+  cached_network_image: ^3.3.1
+  flutter_spinkit: ^5.2.0
+  shared_preferences: ^2.2.2
+  shimmer: ^3.0.0
+  wakelock_plus: ^1.6.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
+
+flutter:
+  uses-material-design: true
