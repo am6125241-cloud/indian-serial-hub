@@ -250,7 +250,7 @@ class EPGService {
     'News': {
       'morning': ['Morning News', 'Breakfast Headlines', 'Sunrise Bulletin', 'Dawn Update'],
       'afternoon': ['Afternoon News', 'Midday Report', 'National Debate', 'Economy Today'],
-      'evening': ['Evening News', 'Prime Time Debate', 'World Report', 'Crime Patrol'],
+      'evening': ['Evening News', 'Prime Time Debate', 'World Report', 'Detective Stories'],
       'night': ['Night Bulletin', 'Late Night Live', 'Sports Wrap', 'Weather Update'],
     },
     'Entertainment': {
@@ -268,7 +268,7 @@ class EPGService {
     'Sports': {
       'morning': ['Sports Morning', 'Cricket Highlights', 'Match Preview', 'Fitness Show'],
       'afternoon': ['Live Match', 'Cricket Live', 'Football Highlights', 'Sports Debate'],
-      'evening': ['Prime Sports', 'Live Cricket', 'Match Analysis', 'Sports Center'],
+      'evening': ['Prime Sports', 'Live Cricket', 'Match Analysis', 'Sports Central'],
       'night': ['Sports Night', 'Match Replay', 'Wrestling', 'Boxing Night'],
     },
     'Kids': {
@@ -346,7 +346,9 @@ class FirebaseService {
   // 6. Uncomment the Firebase initialization in main()
   // 7. Set your database rules and add playlist_url in Realtime Database
 
-  static const String _fallbackUrl = 'REDACTED';
+  // SECURITY/LEGAL: Koi hardcoded third-party playlist/content URL nahi hai.
+  // Playlist URL hamesha user khud Admin Panel se set karta hai.
+  static const String _fallbackUrl = '';
 
   // Remote JSON endpoint for playlist URL (replace with your own)
   // You can use: Firebase Realtime DB, Firestore, or a simple JSON file hosting
@@ -1199,7 +1201,8 @@ class MainBottomNavScreen extends StatefulWidget {
 
 class _MainBottomNavScreenState extends State<MainBottomNavScreen> {
   int _currentIndex = 0;
-  String _m3uUrl = 'REDACTED';
+  // LEGAL: koi default content link nahi — user Admin Panel me apna playlist URL dalega
+  String _m3uUrl = '';
   bool _nightMode = false;
   bool _dataSaverMode = false;
 
@@ -1454,21 +1457,17 @@ class _OTTAppHomePageState extends State<OTTAppHomePage>
 
   // ── Channel Icon Animation ──
   late AnimationController _pulseController;
-  late Animation<double> _pulseAnim;
 
   @override
   void initState() {
     super.initState();
     _favorites = StorageService.getFavorites();
     _recentlyWatched = StorageService.getRecentlyWatched();
-    // Channel icon pulse animation
+    // Rotation animation (live badges / featured rows)
     _pulseController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 2000),
     )..repeat(reverse: true);
-    _pulseAnim = Tween<double>(begin: 0.92, end: 1.08).animate(
-      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
-    );
     // Auto-load channels with initial URL
     if (widget.initialUrl.isNotEmpty) {
       _loadChannels(widget.initialUrl);
@@ -4007,7 +4006,7 @@ class _AdminPanelState extends State<AdminPanel> {
   @override
   void initState() {
     super.initState();
-    _urlController = TextEditingController(text: widget.m3uUrl.isNotEmpty ? widget.m3uUrl : 'REDACTED');
+    _urlController = TextEditingController(text: widget.m3uUrl);
   }
 
   @override

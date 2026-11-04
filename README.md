@@ -1,17 +1,20 @@
 # india_serial_hub
 
-A new Flutter project.
+A Professional Flutter OTT App for Live TV & Indian Serials (Android TV + Mobile).
 
-## Getting Started
+## Features
+- Custom video player (fit modes, pinch zoom, PiP, wakelock)
+- Android TV support — D-pad remote navigation (OK=Play/Pause, Left/Right=Seek, Up/Down=Channel)
+- Homepage staggered entrance animation
+- M3U playlist support (user-provided)
 
-This project is a starting point for a Flutter application.
+## Disclaimer (Legal)
+Ye app khud koi bhi content (serials, videos, channels) **host, provide ya recommend nahi karti**.
+App me content sirf us M3U playlist se aata hai jo **user khud Admin Panel me apna URL daalta hai**.
+Developer kisi bhi third-party content ka owner, hoster ya distributor nahi hai.
+Is repo me koi bhi third-party content link, media file ya playlist store nahi ki gayi hai.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Build
+1. `flutter pub get`
+2. `flutter build apk --release`
+3. APK: `build/app/outputs/flutter-apk/app-release.apk`
